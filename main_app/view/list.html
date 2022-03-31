@@ -1,0 +1,57 @@
+{% extends './main_template/main.html' %}
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+{% block imports %}
+<link rel='stylesheet' type="text/css" href='/static/css/form_city.css' />
+{% endblock %}
+
+{% block content %}
+<main class="form_city">
+  <section class="container pb-5 pt-4" style="background-color: #525252; border-radius: 0.5rem;">
+    {% if city_data != none %}
+    <div class="d-flex pb-5 w-25">
+        <form class="d-flex flex-row" method="POST" >
+            {{ form.hidden_tag() }}
+            {{ form.city(class="form-control me-2",placeholder="Search for city...")}} 
+            {{ form.submit(class="btn btn-primary")}}
+        </form>
+        <!-- this part only plays in the searching -->
+        {% if clear %}
+            <form  method="POST" style="margin: 0; padding: 0;">
+                {{ clear.hidden_tag() }}
+                {{ clear.submit(class="btn btn-secondary",style="margin-left:0.5rem;")}}
+            </form>
+        {% endif %}
+    </div>
+    <div class="accordion" id="accordionExample">
+        {% for city in city_data %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tar{{city.id}}" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 1px solid rgb(173, 173, 173)">
+                {{city.id}}: {{city.name}}
+                </button>
+            </h2>
+            <div id="tar{{city.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="border-bottom: 1px solid rgb(155, 155, 155)">
+                <div class="accordion-body">
+                O nome da cidade é: {{city.name}}.<br>
+                As Coordenadas são estas a seguir: <strong>X:</strong> {{city.coordinate_x}}, <strong>Y:</strong> {{city.coordinate_y}}.
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div> 
+        <h1>No city data found in the server yet.</h1>
+    </div>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+    
+{% endblock %}

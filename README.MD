@@ -1,0 +1,2 @@
+// Tenho uma ideia de como arrumar isso
+// Teriamos de criar um canvas a cada carro criado, assim o overlay deles ia ficar correto, o unico problema ia ser a performance de criar um canvas novo a cada carro criado.

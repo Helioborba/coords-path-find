@@ -1,0 +1,39 @@
+{% extends './main_template/main.html' %}
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+{% block imports %}
+<link rel='stylesheet' type="text/css" href='/static/css/form_city.css'/>
+{% endblock %}
+ 
+{% block content %}
+<main class="form_city">
+  <section class="container py-2" style="background-color: #525252; border-radius: 0.5rem;">
+    <h1 class="text-light pb-3"> Digite as informações da cidade abaixo </h1>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <div class="mb-3">
+          {{ form.city.label(class='form-label text-light') }} {{ form.city(class="form-control")}}
+      </div>
+      <div class="mb-3">
+        {{ form.coordinate_x.label(class='form-label text-light') }} {{ form.coordinate_x(class="form-control")}}
+      </div>
+      <div class="mb-3">
+        {{ form.coordinate_y.label(class='form-label text-light') }} {{ form.coordinate_y(class="form-control")}}
+      </div>
+        {{ form.submit(class="btn btn-secondary")}}
+    </form>
+    {% for messages in get_flashed_messages() %}
+    <div class="alert alert-info" role="alert">
+        {{messages}}
+      </div>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+    
+{% endblock %}

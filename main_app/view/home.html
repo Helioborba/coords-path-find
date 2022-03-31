@@ -1,0 +1,25 @@
+{% extends './main_template/main.html' %}
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+{% block content %}
+<main style="margin-top: 4rem;">
+    <section class="container py-5" style="font-size: 1.5rem;">
+        <h1>Bem vindo ao sistema de localização por coordenadas com flask.</h1>
+        <div>
+            <h2>Cidades & Quantidades</h2>
+            <p>Com este sistema você podera efetuar operações para representar graficamente os dados relativos as cidades; primeiramente com coordenadas para calcular distâncias entre cidades.</p>
+        </div>
+        <div>
+            <h2>Regions</h2>
+            <p>O outro sistema vem por calculo de localização relativo a regiões e demografia.</p>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

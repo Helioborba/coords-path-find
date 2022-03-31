@@ -1,0 +1,26 @@
+{% extends './main_template/main.html' %}
+
+{% block title %}
+<title>{{title}}</title>
+{% endblock %}
+
+{% block content %}
+<main style="margin-top: 4rem;">
+    <section class="container py-5" style="font-size: 1.5rem;">
+        <h1>Visualizador de Coordenadas Interativo</h1>
+        <div>
+            <h2>Clique em qualquer local na tela abaixo para criar um veiculo.</h2>
+        </div>
+    </section>
+    <section class="container py-5" style="position: relative;">
+        <canvas id="background" height="400"  width="1000" style="position:absolute; border: 1px solid red; "></canvas>
+        <canvas id="animations" height="400"  width="1000" style="position:absolute;"></canvas>
+    </section>
+</main>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="/static/scripts/main.js" type="module"></script>
+{% endblock %}
