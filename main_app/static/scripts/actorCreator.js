@@ -36,8 +36,19 @@ export function carStartPosition(initialCoord, canvas, ctx, cities) {
     // No momento esta função não faz nada
     function idle() {
         state.actionIdle();
-
         console.log('No next city, idling..');
+    }
+
+    
+    // para o veiculo atual momentaneamente
+    window.stop = function stop(e) {
+        if (state.stopped) {
+            e.textContent = 'Iniciar veículo';
+            state.stopped = false;
+        } else {
+            state.stopped = true;
+            e.textContent = 'Parar veículo';
+        }
     }
 
     /**
@@ -49,15 +60,15 @@ export function carStartPosition(initialCoord, canvas, ctx, cities) {
     function cicles() {
         //  Faz o loop até o carro achar a primeira parada (primeiro loop é especial!) e após continua o loop movendo até as próximas cidades 
         citiesVisitedCount(cities, state); // used to evade some annoying logs in the console for unfinished routes
-        if(state.targetReached === false && state.targetsLeft > 0) {
-            setTimeout(cicles, [400]);
-        } else if (state.targetsLeft > 0) {
+        if( state.targetReached === false && state.targetsLeft > 0 ) {
+            setTimeout(cicles,[400]);
+        } else if ( state.targetsLeft > 0 ) {
             state.setTargetReached(false);
             move();
             setTimeout(cicles,[400]);
         } else {
             idle();
-            setTimeout(cicles, [4000]);
+            setTimeout(cicles,[4000]);
         };
     }
 

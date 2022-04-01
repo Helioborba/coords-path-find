@@ -9,7 +9,7 @@
     <section class="container py-5" style="font-size: 1.5rem;">
         <h1>Visualizador de Coordenadas Interativo</h1>
         <div>
-            <h2>Clique em qualquer local na tela abaixo para criar um veículo.</h2>
+            <h2>Clique em "Adicionar Veiculo" para criar um veículo.</h2>
         </div>
     </section>
     <section class="container py-5" style="font-size: 1.5rem;">
@@ -18,10 +18,10 @@
                 Controles do carro
             </h2>
             <div class="col">
-                <button class="btn btn-secondary" onclick=add()>
+                <button class="btn btn-secondary" id="add" onclick=add(this)>
                     Adicionar veículo
                 </button>
-                <button class="btn btn-secondary" onclick="hey()">
+                <button class="btn btn-secondary" id="stop" disabled="true" onclick=stop(this)>
                     Parar veículo
                 </button>
                 <button class="btn btn-secondary" id="reset" onclick=reset(this)>

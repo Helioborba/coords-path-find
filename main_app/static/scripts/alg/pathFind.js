@@ -45,6 +45,7 @@ export class PathAlgorithm {
     }
     
     findPath() {
+        let paths = [];
         this.state.setSearchingTarget(); // apenas para novelty se me entende
         const openSet = this.openSet;
         const closedSet = this.closedSet;
@@ -70,7 +71,7 @@ export class PathAlgorithm {
             openSet.delete(currentNode);
             // currentNode.drawClosedNode();
             closedSet.add(currentNode);
-
+            paths.push(currentNode);
             // Usado em Debug
             // if (currentNode.id == startNode.id) {
             //     currentNode.drawNode();
@@ -86,7 +87,7 @@ export class PathAlgorithm {
             
             // Quando chegar no último ponto o loop é encerrado e começamos a desenhar o percurso.
             if ( currentNode.id == endNode.id) {
-                retracePath(startNode, endNode, this.city, this.state); 
+                retracePath(startNode, endNode, this.city, this.state, (closedSet.size - 1)); // O tamanho do set deve ser -1 para o numero de iteração funcionar 
                 // return;
                 break;
             }
@@ -138,15 +139,16 @@ const timer = ms => new Promise(res => setTimeout(res, ms));
 /**
  *  Aqui é onde de fato é desenhado o caminho, também serve como sinal caso a cidade seja visitada e onde se encontra o carro
  */ 
-async function retracePath(startNode, endNode, city, state) {
-    let path = new Set();
+async function retracePath(startNode, endNode, city, state, totalNodes) {
+    // let path = new Set();
     let currentNode = endNode;
     let previousNode;
-
+    var iterator = 0;
+    
     // Desenha a cidade enquanto ela ainda não foi visitada, senão o carro muda de alvo após ser pego os dados de localização no momento
     while (currentNode !== startNode && city.visited !== true) {
         state.setMoving(true);
-        path.add(currentNode); // the node path (completed) has something to do with this..
+        // path.add(currentNode); // o caminho final com todas as coordenadas
         previousNode = currentNode;
         currentNode = currentNode.parent;
         state.setCurrentCoords(currentNode.posx, currentNode.posy);
@@ -155,14 +157,15 @@ async function retracePath(startNode, endNode, city, state) {
             previousNode.clearPath();
         }
         if (currentNode != startNode) {
-            console.log(currentNode)
+            iterator += 1;
+            state.setProgressBar(Math.round(100 * (iterator / totalNodes)));
             currentNode.drawPath();
             await timer(60); // Aqui é o delay da animação (no caso desenhar e deletar, criando sensação de movimento na tela)
         }
     }
     // O clear time roda pela última vez ao chegar na cidade (ou se ela for visitada), então temos que re-desenhar o carro após o termino dos desenhos, para ele permanecer no local ao invés de sumir espontaneamente
     currentNode.drawPath();
-
+    state.setProgressBar(100);
     // Estas 3 últimas linhas são o pilar do sistema; pegar a coordenada atual do carro, colocar que a cidade atual foi visitada e mudar o estado do carro para idle
     state.setCurrentCoords(currentNode.posx, currentNode.posy)
     city.setVisited(true);

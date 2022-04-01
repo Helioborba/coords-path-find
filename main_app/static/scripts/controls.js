@@ -18,6 +18,7 @@ export class CarState {
         this.currentTarget = null; // Objeto da cidade
         this.isMoving = false;
         this.idle = false;
+        this.stopped = false; // Não confundir com iddle
         this.searchingTarget = false;
         this.targetsLeft = 0;
         this.targetReached = false;
@@ -34,6 +35,7 @@ export class CarState {
         this.isMoving = state;
         this.idle = !state;
         this.controllables.setAction(`Em rota para ${this.currentTarget.name}.`);
+        this.controllables.setProgressBar();
     }  
 
     actionIdle() {
@@ -42,6 +44,10 @@ export class CarState {
         this.controllables.setAction(`Parado na cidade de ${this.currentTarget.name}.`);
     }
     
+    setProgressBar(value) {
+        this.controllables.setProgressBar(value);
+    }
+
     setSearchingTarget() {
         this.searchingTarget = true;
         this.idle = false;
@@ -77,7 +83,8 @@ export class CarState {
     }
 
     setProgressBar(value) {
-        this.progressBar = value;
+        this.progressBar.textContent = `${value}%`;
+        this.progressBar.style.width = `${value}%`;
     }
 
     setAction(value) {

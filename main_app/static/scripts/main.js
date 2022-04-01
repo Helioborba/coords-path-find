@@ -28,7 +28,12 @@ fetch('/temp/list', { method: "GET", mode: 'cors', headers: { 'Content-Type': 'a
 // Funções importadas direto ao app estão abaixo
 
 // criar o veículo, seria bom colocar uma forma de pegar de acordo com o usuário o local inicial
-window.add = function add() {
+window.add = function add(e) {
+    // faz o botão de parar o veículo retornar ao normal
+    let stopButton = document.getElementById('stop');
+    stopButton.disabled = false;
+    // desativar o botão adicionar e enviar os dados para o desenho do carro
+    e.disabled = true;
     let initialCoord = { x: 30, y: 30}; // hardcoded no momento, antes utilizamos a função get position on click do helpers
     drawCar(initialCoord, canvas, ctx, cities);
 }
@@ -42,7 +47,6 @@ window.reset = function reset(e) {
         ctxBg.fillStyle = "white";
         ctxBg.fillRect(0, 0, canvasBg.width, canvasBg.height);
         cities.map( (city) => {
-            console.log('hey');
             e.disabled = true;
             city.resetVisited();
             setTimeout(

@@ -79,7 +79,6 @@ export class Car {
             return Math.ceil(num / 5) * 5;
         }
         let coords = state.getCurrentCoords();
-        console.log(coords)
         // ponto da cidade mais próxima
         let packStartPoint = {x: roundTen(x), y: roundTen(y)}
         // Esse é o ponto inicial do carro
@@ -87,22 +86,4 @@ export class Car {
         
         startPath(this.canvas, this.ctx, packStartPoint, packEndPoint, cities, state);
     }  
-}
-
-/**
- * Utilizado para controlar as labels do estado do carro, assim como a barra de porcentagem.
- */
-export class Controllables {
-    constructor(label, statusBar) {
-        this.label = label;
-        this.statusBar = statusBar;
-    }
-
-    setStatusBar(value) {
-        this.statusBa = value;
-    }
-
-    setLabel(value) {
-        this.label = value;
-    }
 }
