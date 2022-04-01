@@ -1,6 +1,10 @@
-import {drawAllCities} from '/static/scripts/canvaEvents.js';
+import {drawAllCities, drawCar} from '/static/scripts/canvaEvents.js';
 import {createAllCities} from '/static/scripts/actorCreator.js';
-import {drawCar} from '/static/scripts/canvaEvents.js';
+import {Controllables} from '/static/scripts/controls.js';
+// Criação de um objeto com os html (estado e progresso)
+let action = document.getElementById('action'); // estado atual
+let progressBar = document.getElementById('progressBar');
+export const controllables = new Controllables(action, progressBar);
 
 // Existem dois backgrounds, um para animação e um para o background
 let canvasBg = document.getElementById('background'); // BG
@@ -8,15 +12,51 @@ let ctxBg = canvasBg.getContext('2d');
 let canvas = document.getElementById('animations'); // Anims
 let ctx = canvas.getContext('2d');
 
+var cities = null; // Não utilizar const para este caso em específico
 
 fetch('/temp/list', { method: "GET", mode: 'cors', headers: { 'Content-Type': 'application/json',} })
 .then( res => res.json())
 .then( (data) => {
-    const cities = createAllCities(canvasBg, ctxBg, data);
+    cities = createAllCities(canvasBg, ctxBg, data);
     drawAllCities(canvasBg, ctxBg, cities);
-    drawCar(canvas, ctx, cities)
 })
 .catch(err => console.log(err))
 
 
 
+
+// Funções importadas direto ao app estão abaixo
+
+// criar o veículo, seria bom colocar uma forma de pegar de acordo com o usuário o local inicial
+window.add = function add() {
+    let initialCoord = { x: 30, y: 30}; // hardcoded no momento, antes utilizamos a função get position on click do helpers
+    drawCar(initialCoord, canvas, ctx, cities);
+}
+
+// usado para resetar as cidades visitadas
+window.reset = function reset(e) {
+    // If caso não haja ainda dados
+    if (cities !== null) {
+        ctxBg.restore();
+        ctxBg.save();
+        ctxBg.fillStyle = "white";
+        ctxBg.fillRect(0, 0, canvasBg.width, canvasBg.height);
+        cities.map( (city) => {
+            console.log('hey');
+            e.disabled = true;
+            city.resetVisited();
+            setTimeout(
+                () => {
+                    e.disabled = false;
+                },[1200]
+            )
+        })
+    } else {
+        e.disabled = true;
+        setTimeout(
+            () => {
+                e.disabled = false;
+            },[1200]
+        )
+    }
+}

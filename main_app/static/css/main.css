@@ -1,6 +1,6 @@
 /* useful for gradients: https://cssgradient.io/ */
 .background {
-    min-height: 100vw; /* double edge here, if we use vh the canvas will have a white background, else the page will be bigger for others*/ 
+    min-height: 100vh; /* double edge here, if we use vh the canvas will have a white background, else the page will be bigger for others*/ 
     background: rgb(237,8,74); 
     background: linear-gradient(114deg, rgba(237,8,74,1) 16%, rgba(157,242,245,0.8) 100%); 
     padding-bottom: 0.5rem;

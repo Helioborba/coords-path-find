@@ -45,7 +45,7 @@ export class PathAlgorithm {
     }
     
     findPath() {
-        this.state.searchingTarget = true; // provavelmente desnecessário
+        this.state.setSearchingTarget(); // apenas para novelty se me entende
         const openSet = this.openSet;
         const closedSet = this.closedSet;
         let currentNode = this.startNode; // O nó atual, o nó primário é o padrão no caso
@@ -83,14 +83,13 @@ export class PathAlgorithm {
                 
             //     currentNode.drawNode();
             // }
-    
+            
             // Quando chegar no último ponto o loop é encerrado e começamos a desenhar o percurso.
             if ( currentNode.id == endNode.id) {
                 retracePath(startNode, endNode, this.city, this.state); 
                 // return;
                 break;
             }
-            
             this.getNeighbors(currentNode).forEach( function(neighbor) {
                 let neighborNode = gridPoints[neighbor];
                 let neighborH = neighborNode.getHCost();
@@ -146,7 +145,8 @@ async function retracePath(startNode, endNode, city, state) {
 
     // Desenha a cidade enquanto ela ainda não foi visitada, senão o carro muda de alvo após ser pego os dados de localização no momento
     while (currentNode !== startNode && city.visited !== true) {
-        path.add(currentNode);
+        state.setMoving(true);
+        path.add(currentNode); // the node path (completed) has something to do with this..
         previousNode = currentNode;
         currentNode = currentNode.parent;
         state.setCurrentCoords(currentNode.posx, currentNode.posy);
@@ -155,8 +155,9 @@ async function retracePath(startNode, endNode, city, state) {
             previousNode.clearPath();
         }
         if (currentNode != startNode) {
+            console.log(currentNode)
             currentNode.drawPath();
-            await timer(1600); // Aqui é o delay da animação (no caso desenhar e deletar, criando sensação de movimento na tela)
+            await timer(60); // Aqui é o delay da animação (no caso desenhar e deletar, criando sensação de movimento na tela)
         }
     }
     // O clear time roda pela última vez ao chegar na cidade (ou se ela for visitada), então temos que re-desenhar o carro após o termino dos desenhos, para ele permanecer no local ao invés de sumir espontaneamente
@@ -165,5 +166,5 @@ async function retracePath(startNode, endNode, city, state) {
     // Estas 3 últimas linhas são o pilar do sistema; pegar a coordenada atual do carro, colocar que a cidade atual foi visitada e mudar o estado do carro para idle
     state.setCurrentCoords(currentNode.posx, currentNode.posy)
     city.setVisited(true);
-    state.setTargetReached(true) // <<<<<< Significa 'Idle' esta linha
+    state.setTargetReached(true); // <<<<<< Significa 'Idle' esta linha
 }

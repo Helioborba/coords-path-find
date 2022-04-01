@@ -107,9 +107,14 @@ function drawCar(target) {
 // O problema desse método é caso os veiculos estejam próximos demais, cortando parte do outro
 // Tenho uma ideia de como arrumar isso
 // Teriamos de criar um canvas a cada carro criado, assim o overlay deles ia ficar correto, o unico problema ia ser a performance de criar um canvas novo a cada carro criado.
+// function clearCar(target) {
+//     target.gctx.clearRect( (target.posx - 16), (target.posy - 16), 32, 32);
+// }
+// esta versão deleta o canvas por completo, diferente da acima que apenas limpa o último campo apenas
 function clearCar(target) {
-    target.gctx.clearRect( (target.posx - 16), (target.posy - 16), 32, 32);
+    target.gctx.clearRect( (target.posx - 60), (target.posy - 60), 160, 160);
 }
+
 
 // Distância entre nós
 function getDistance(nodeA, nodeB) {

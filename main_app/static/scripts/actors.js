@@ -8,6 +8,7 @@ export class City {
         this.coords_x = x;
         this.coords_y = y;
         this.visited = false;
+        this.isTarget = false
         this.style = '#000000';
     }
     
@@ -32,9 +33,20 @@ export class City {
     setVisited() {
         this.visited = true;
         this.style = '#00FF00';
-        this.draw()
+        this.draw();
     }
     
+    resetVisited() {
+        this.visited = false;
+        this.style = '#000000';
+        this.draw();
+    }
+
+    setIsTarget() {
+        this.isTarget = true;
+        this.style = '#FFFF00';
+        this.draw();
+    }
     repr() {
         return [ {name: this.name}, {x: this.x}, {y: this.y} ]
     }
@@ -45,7 +57,7 @@ export class Car {
     constructor(canvas, ctx){
         this.canvas = canvas;
         this.ctx = ctx;
-        // Seria bom recolar isto depois
+        // Seria bom utilizar isto depois novamente
         // this.init_x = coords.x;
         // this.init_y = coords.y;
     }
@@ -75,4 +87,22 @@ export class Car {
         
         startPath(this.canvas, this.ctx, packStartPoint, packEndPoint, cities, state);
     }  
+}
+
+/**
+ * Utilizado para controlar as labels do estado do carro, assim como a barra de porcentagem.
+ */
+export class Controllables {
+    constructor(label, statusBar) {
+        this.label = label;
+        this.statusBar = statusBar;
+    }
+
+    setStatusBar(value) {
+        this.statusBa = value;
+    }
+
+    setLabel(value) {
+        this.label = value;
+    }
 }

@@ -1,6 +1,7 @@
 import {City, Car} from '/static/scripts/actors.js';
-import { CarState} from '/static/scripts/controls.js';
-import { closestCity, citiesVisitedCount } from '/static/scripts/helpers.js';
+import {CarState} from '/static/scripts/controls.js';
+import {closestCity, citiesVisitedCount} from '/static/scripts/helpers.js';
+import { controllables } from '/static/scripts/main.js';
 /**
  * Desenha todas as cidades
  * @param {{name:string, x:int, y:int}} data Objeto do fetch recebido previamente
@@ -8,7 +9,7 @@ import { closestCity, citiesVisitedCount } from '/static/scripts/helpers.js';
 export function createAllCities(canvasBg,ctxBg,data) { 
     const cities = [];
     data.map( (row) => {
-        cities.push(new City(canvasBg, ctxBg, row.name, row.x, row.y));
+        cities.push( new City(canvasBg, ctxBg, row.name, row.x, row.y));
     })
     return cities;
 }
@@ -18,7 +19,7 @@ export function carStartPosition(initialCoord, canvas, ctx, cities) {
     // Cria o carro
     let objCar = new Car(canvas, ctx, initialCoord);
     console.log('initial ', initialCoord);
-    const state = new CarState(initialCoord);
+    const state = new CarState(initialCoord, controllables);
     state.setCurrentCoords(initialCoord.x, initialCoord.y);
     // Inicia o estado do carro, utilizado para fazer quase todas as operações de 'loop infinito'
     
@@ -26,14 +27,16 @@ export function carStartPosition(initialCoord, canvas, ctx, cities) {
     //  Essas funções devem permanecer dentro da carStartPosition senão os dados estaram nulos
     function move() {
         let closest = closestCity(state.currentCoords, cities, state);
-        let targetCity = cities.find(x => x.name === closest.name); // give back the whole object
-        console.log(targetCity.name)
+        let targetCity = cities.find(x => x.name === closest.name);  // retorna o objeto da cidade
+        targetCity.setIsTarget(); // colocar a cidade alvo
+        state.setCurrentTarget(targetCity);
         objCar.init(closest.coords_x, closest.coords_y, targetCity, state);
     }
-
+    
     // No momento esta função não faz nada
     function idle() {
         state.actionIdle();
+
         console.log('No next city, idling..');
     }
 
@@ -47,13 +50,14 @@ export function carStartPosition(initialCoord, canvas, ctx, cities) {
         //  Faz o loop até o carro achar a primeira parada (primeiro loop é especial!) e após continua o loop movendo até as próximas cidades 
         citiesVisitedCount(cities, state); // used to evade some annoying logs in the console for unfinished routes
         if(state.targetReached === false && state.targetsLeft > 0) {
-            setTimeout(cicles, 2000);
+            setTimeout(cicles, [400]);
         } else if (state.targetsLeft > 0) {
             state.setTargetReached(false);
             move();
-            setTimeout(cicles, 2000);
+            setTimeout(cicles,[400]);
         } else {
             idle();
+            setTimeout(cicles, [4000]);
         };
     }
 

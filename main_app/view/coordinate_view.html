@@ -9,12 +9,34 @@
     <section class="container py-5" style="font-size: 1.5rem;">
         <h1>Visualizador de Coordenadas Interativo</h1>
         <div>
-            <h2>Clique em qualquer local na tela abaixo para criar um veiculo.</h2>
+            <h2>Clique em qualquer local na tela abaixo para criar um veículo.</h2>
         </div>
     </section>
-    <section class="container py-5" style="position: relative;">
-        <canvas id="background" height="400"  width="1000" style="position:absolute; border: 1px solid red; "></canvas>
-        <canvas id="animations" height="400"  width="1000" style="position:absolute;"></canvas>
+    <section class="container py-5" style="font-size: 1.5rem;">
+        <div>
+            <h2>
+                Controles do carro
+            </h2>
+            <div class="col">
+                <button class="btn btn-secondary" onclick=add()>
+                    Adicionar veículo
+                </button>
+                <button class="btn btn-secondary" onclick="hey()">
+                    Parar veículo
+                </button>
+                <button class="btn btn-secondary" id="reset" onclick=reset(this)>
+                    Reiniciar Visitadas
+                </button>
+            </div>
+            <div class="progress mt-3">
+                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div> <!--change width to change progress-->
+            </div>
+            <div id="action" style="color: blue;"></div>
+        </div>
+    </section>
+    <section class="container" style="position: relative; height: 500px; overflow: scroll;">
+        <canvas id="background" height="2000"  width="2000" style="position:absolute; border: 1px solid #000000;"></canvas>
+        <canvas id="animations" height="2000"  width="2000" style="position:absolute;" ></canvas>
     </section>
 </main>
 {% endblock %}

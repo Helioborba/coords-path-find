@@ -1,4 +1,3 @@
-import {getCursorPosition} from '/static/scripts/controls.js';
 import {carStartPosition} from '/static/scripts/actorCreator.js';
 /**
  * Desenha todos os carros no canvas
@@ -17,14 +16,12 @@ export function drawAllCities(canvasBg, ctxBg, cities){
 }
 
 /**
- * Usado para adicionar um novo carro, necessita das coordenadas da cidade mais próxima e o canvas para desenhar.
+ * Usado para adicionar um novo carro, necessita das coordenadas do veículo inicial, da cidade mais próxima e o canvas para desenhar.
+ * @param {{x:int, y:int}} initialCoord
  * @param {HTMLElement} canvas 
  * @param {HTMLElement} ctx
  * @param {{x:int, y:int}} closestCityCoords 
  */
-export function drawCar(canvas, ctx, cities) {
-    canvas.addEventListener('mousedown', function(event) {
-        let initialCoord = getCursorPosition(canvas, event);
-        carStartPosition(initialCoord, canvas, ctx, cities);
-    })
+export function drawCar(initialCoord, canvas, ctx, cities) {
+    carStartPosition(initialCoord, canvas, ctx, cities);
 }

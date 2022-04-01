@@ -21,11 +21,11 @@ export class Grid {
     createGrid(createNodeObj) {
         let tempNode;
         let countNodes = 0;
-        this.gctx.beginPath();
-        this.gctx.lineWidth = "1";
-        this.gctx.strokeStyle = "black";
-        this.gctx.rect(0, 0, this.width, this.height);
-        this.gctx.stroke();
+        // this.gctx.beginPath();
+        // this.gctx.lineWidth = "1";
+        // this.gctx.strokeStyle = "black";
+        // this.gctx.rect(0, 0, this.width, this.height);
+        // this.gctx.stroke();
         this.gridPoints = [];
     
         for (let i = 0; i < this.width; i += this.nodesize) {
