@@ -141,12 +141,12 @@ const timer = ms => new Promise(res => setTimeout(res, ms));
  */ 
 async function retracePath(startNode, endNode, city, state, totalNodes) {
     // let path = new Set();
-    let currentNode = endNode;
-    let previousNode;
-    var iterator = 0;
-    
+    var currentNode = endNode;
+    var previousNode;
+    var totalNodes = state.progress.totalNodes || totalNodes;
+    var iterator = state.progress.iterator || 0;
     // Desenha a cidade enquanto ela ainda não foi visitada, senão o carro muda de alvo após ser pego os dados de localização no momento
-    while (currentNode !== startNode && city.visited !== true) {
+    while (currentNode !== startNode && city.visited !== true && !state.stopped) {
         state.setMoving(true);
         // path.add(currentNode); // o caminho final com todas as coordenadas
         previousNode = currentNode;
@@ -159,15 +159,21 @@ async function retracePath(startNode, endNode, city, state, totalNodes) {
         if (currentNode != startNode) {
             iterator += 1;
             state.setProgressBar(Math.round(100 * (iterator / totalNodes)));
+            state.setProgress({iterator:iterator, totalNodes:totalNodes});
             currentNode.drawPath();
             await timer(60); // Aqui é o delay da animação (no caso desenhar e deletar, criando sensação de movimento na tela)
         }
     }
+
+    
     // O clear time roda pela última vez ao chegar na cidade (ou se ela for visitada), então temos que re-desenhar o carro após o termino dos desenhos, para ele permanecer no local ao invés de sumir espontaneamente
     currentNode.drawPath();
-    state.setProgressBar(100);
-    // Estas 3 últimas linhas são o pilar do sistema; pegar a coordenada atual do carro, colocar que a cidade atual foi visitada e mudar o estado do carro para idle
     state.setCurrentCoords(currentNode.posx, currentNode.posy)
-    city.setVisited(true);
-    state.setTargetReached(true); // <<<<<< Significa 'Idle' esta linha
+    if (!state.stopped) {
+        state.setProgress({iterator:0, totalNodes:0});
+        // Estas 3 últimas linhas são o pilar do sistema; pegar a coordenada atual do carro, colocar que a cidade atual foi visitada e mudar o estado do carro para idle
+        state.setProgressBar(100);
+        city.setVisited(true);
+        state.setTargetReached(true); // <<<<<< Significa 'Idle' esta linha
+    }
 }

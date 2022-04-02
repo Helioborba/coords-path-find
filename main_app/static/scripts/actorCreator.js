@@ -39,15 +39,21 @@ export function carStartPosition(initialCoord, canvas, ctx, cities) {
         console.log('No next city, idling..');
     }
 
-    
+    function stopped() {
+        console.log('doing nothing, totally stoped');
+    }
     // para o veiculo atual momentaneamente
     window.stop = function stop(e) {
         if (state.stopped) {
-            e.textContent = 'Iniciar veículo';
-            state.stopped = false;
-        } else {
-            state.stopped = true;
+            console.log('iniciou');
+            // avisa o estado que esta voltando a mover e re-calcula a distância
+            state.setStopped(false);
+            move();
             e.textContent = 'Parar veículo';
+        } else {
+            console.log('parou')
+            e.textContent = 'Iniciar veículo';
+            state.setStopped(true);
         }
     }
 
@@ -59,17 +65,22 @@ export function carStartPosition(initialCoord, canvas, ctx, cities) {
      */
     function cicles() {
         //  Faz o loop até o carro achar a primeira parada (primeiro loop é especial!) e após continua o loop movendo até as próximas cidades 
-        citiesVisitedCount(cities, state); // used to evade some annoying logs in the console for unfinished routes
-        if( state.targetReached === false && state.targetsLeft > 0 ) {
-            setTimeout(cicles,[400]);
-        } else if ( state.targetsLeft > 0 ) {
-            state.setTargetReached(false);
-            move();
-            setTimeout(cicles,[400]);
+        citiesVisitedCount(cities, state); // apenas para não causar bugs de undefined no final das rotas
+        if (state.stopped === false) {
+            if( state.targetReached === false && state.targetsLeft > 0 ) {
+                setTimeout(cicles,[400]);
+            } else if ( state.targetsLeft > 0 ) {
+                state.setTargetReached(false);
+                move();
+                setTimeout(cicles,[400]);
+            } else {
+                idle();
+                setTimeout(cicles,[4000]);
+            };
         } else {
-            idle();
-            setTimeout(cicles,[4000]);
-        };
+            stopped();
+            setTimeout(cicles,[3000]);
+        }
     }
 
     // Aqui é o 'chute' inicial do estado, temos que inicializar dessa forma pois o carro não pode estar idle da primeira vez

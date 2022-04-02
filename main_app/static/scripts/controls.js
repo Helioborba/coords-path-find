@@ -15,7 +15,7 @@ export function getCursorPosition(canvas, event) {
 export class CarState {
     constructor(currentCoords, controllables) {
         this.currentCoords = currentCoords;
-        this.currentTarget = null; // Objeto da cidade
+        this.currentTarget = null; // Objeto da cidade alvo
         this.isMoving = false;
         this.idle = false;
         this.stopped = false; // Não confundir com iddle
@@ -23,10 +23,13 @@ export class CarState {
         this.targetsLeft = 0;
         this.targetReached = false;
         this.controllables = controllables; // Objeto do html
+        this.initialCity = null; // cidade inicial
+        this.progress = {iterator:null, totalNodes:null}; // apenas para colocar a porcentagem já rodada
     }
 
     /** Utilidade e informaçãoo: Objeto da cidade atual */
     setCurrentTarget(city) {
+        this.initialCity = this.currentTarget;
         this.currentTarget = city;
         this.idle = false;
     }
@@ -34,7 +37,7 @@ export class CarState {
     setMoving(state) {
         this.isMoving = state;
         this.idle = !state;
-        this.controllables.setAction(`Em rota para ${this.currentTarget.name}.`);
+        this.controllables.setAction(`Em rota para: ${this.currentTarget.name}.`);
         this.controllables.setProgressBar();
     }  
 
@@ -42,6 +45,20 @@ export class CarState {
         this.idle = true;
         this.isMoving = false;
         this.controllables.setAction(`Parado na cidade de ${this.currentTarget.name}.`);
+    }
+
+    setStopped(state) {
+        this.targetReached = false;
+        this.stopped = state; // Não confundir com iddle
+        if (state) {
+            if( ( Math.round(100 * (this.progress.iterator / this.progress.totalNodes)) ) >= 70 ) {
+                this.controllables.setAction(`Parado próximo ao alvo: ${this.currentTarget.name}.`);
+            } else if ( ( Math.round(100 * (this.progress.iterator / this.progress.totalNodes)) ) <= 30) {
+                this.controllables.setAction(`Parado próxima a cidade inicial de ${this.initialCity.name}.`);
+            } else {
+                this.controllables.setAction(`Parado a caminho da cidade de ${this.currentTarget.name}`);
+            }
+        }
     }
     
     setProgressBar(value) {
@@ -69,8 +86,12 @@ export class CarState {
 
     setTargetReached(state) {
         this.targetReached = state;
+
     }  
     
+    setProgress(value) {
+        this.progress = {iterator:value.iterator, totalNodes:value.totalNodes};
+    }
 }
 
 /**
