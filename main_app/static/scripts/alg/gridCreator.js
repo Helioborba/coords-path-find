@@ -1,3 +1,4 @@
+import { COORDS_ARRAY } from "/static/scripts/main.js";
 // Essa parte necessita de refatoração, assim como as outras dentro do Algoritmo
 /**
  * Cria o grid do movimento e também os bloqueios
@@ -27,15 +28,19 @@ export class Grid {
         // this.gctx.rect(0, 0, this.width, this.height);
         // this.gctx.stroke();
         this.gridPoints = [];
-    
+        console.log(COORDS_ARRAY);
         for (let i = 0; i < this.width; i += this.nodesize) {
             this.gridPointsByPos[i] = [];
     
             for (let j = 0; j < this.height; j += this.nodesize) {
                 this.gridPointsByPos[i][j] = countNodes;
                 //tem um problema de movimento aqui
-                tempNode = createNodeObj(countNodes, i, j);
-
+                tempNode = createNodeObj(countNodes, i, j, true);
+                if (COORDS_ARRAY.some(coord_river => coord_river.posx === tempNode.posx  && coord_river.posy === tempNode.posy )) {
+                    console.log('has');
+                    tempNode.walkable = false;
+                    /* vendors contains the element we're looking for */
+                }
                 // Aqui colocamos bloqueios como rios ou prédios
                 // if (countNodes === 53 || countNodes === 93 || countNodes === 133 || countNodes === 173 || countNodes === 213 || countNodes === 253 || countNodes === 293 || countNodes === 333) {
                 //     tempNode.walkable = false;

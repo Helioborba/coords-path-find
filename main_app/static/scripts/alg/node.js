@@ -23,11 +23,13 @@ export class Node {
     toggleWalkable() {
         this.walkable = !this.walkable;
     }
+
     getValueF() {
         // Isso é um problema
         let fValue = (this.getValueH()) + (this.getValueG());
         return (fValue);
     }
+
     getValueH() {
         let endNodePosition = {
             posx: this.endPoint.x,
@@ -35,6 +37,7 @@ export class Node {
         };
         return (getDistance(this, endNodePosition));
     }
+    
     getValueG() {
         let startPointPosition = {
             posx: this.endPoint.x,
@@ -51,9 +54,9 @@ export class Node {
         clearCar(this)
     }
 
-    // createWall() {
-    //   drawCar(this.gctx, this, 2, "black", "black");
-    // }
+    createWall() {
+      nodeDrawer(this.gctx, this, 2, "black", "black");
+    }
     // drawOpenNode() {
     //   drawCar(this.gctx, this, 2, "black", "green");
     // }
@@ -102,6 +105,17 @@ function drawCar(target) {
         target.gctx.drawImage(image, 0, 0, 32, 32, (target.posx - 16), (target.posy - 16), 32, 32);
     }
 }
+
+function nodeDrawer(context, target, lineW, strokeS, fillS) {
+    context.beginPath();
+    context.lineWidth = lineW;
+    context.strokeStyle = strokeS;
+    context.fillStyle = fillS;
+    context.fillRect(target.posx, target.posy, target.size, target.size);
+    context.rect(target.posx, target.posy, target.size, target.size);
+    context.closePath();
+    context.stroke();
+  }
 
 // Instrução para a tela de como limpar as instâncias do veiculo
 // O problema desse método é caso os veiculos estejam próximos demais, cortando parte do outro

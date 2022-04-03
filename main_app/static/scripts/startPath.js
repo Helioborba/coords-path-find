@@ -11,9 +11,9 @@ export default function startPath(canvas, ctx, startPoint, endPoint, cities, sta
   let nodesize = 5;
   
   /** Essa função é utilizada para criar o nó enquanto recebe os dados do arquivo principal (main.js), assim podemos criar objetos lá pra frente no Grid */
-  function createNodeObj(countNodes, i, j) {
+  function createNodeObj(countNodes, i, j, walkable) {
     // função para criar o node com I,J
-    const nodeObj = new Node(countNodes, nodesize, i, j, true, ctx, startPoint, endPoint);
+    const nodeObj = new Node(countNodes, nodesize, i, j, walkable, ctx, startPoint, endPoint);
     return nodeObj;
   }
 

@@ -1,6 +1,7 @@
 import {drawAllCities, drawCar} from '/static/scripts/canvaEvents.js';
+import {getCursorPosition,Controllables,roundTen} from '/static/scripts/controls.js';
 import {createAllCities} from '/static/scripts/actorCreator.js';
-import {Controllables} from '/static/scripts/controls.js';
+
 // Criação de um objeto com os html (estado e progresso)
 let action = document.getElementById('action'); // estado atual
 let progressBar = document.getElementById('progressBar');
@@ -64,3 +65,19 @@ window.reset = function reset(e) {
         )
     }
 }
+
+// Pack the coord array
+export const COORDS_ARRAY = [];
+
+document.getElementById("rivers").addEventListener("click", function(event) {
+    canvas.style.cursor = 'pointer';
+    canvas.addEventListener('click', function(event) {
+        let cursorCoord = getCursorPosition(canvas, event);
+        let roundedCoord = {posx: roundTen(cursorCoord.x), posy: roundTen(cursorCoord.y)};
+        COORDS_ARRAY.push(roundedCoord);
+        ctxBg.restore();
+        ctxBg.save();
+        ctxBg.strokeStyle = "#0000FF";
+        ctxBg.strokeRect(roundTen(cursorCoord.x) - 10, roundTen(cursorCoord.y) - 10, 10, 10);
+    })
+});

@@ -25,3 +25,8 @@ export function drawAllCities(canvasBg, ctxBg, cities){
 export function drawCar(initialCoord, canvas, ctx, cities) {
     carStartPosition(initialCoord, canvas, ctx, cities);
 }
+
+
+// document.getElementById("resetRivers").addEventListener("click", function(event) {
+//     resetWalls();
+// })

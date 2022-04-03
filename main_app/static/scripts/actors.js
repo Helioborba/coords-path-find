@@ -1,5 +1,5 @@
 import startPath from "/static/scripts/startPath.js";
-
+import { roundTen } from "/static/scripts/controls.js";
 export class City {
     constructor(canvasBg,ctxBg, name, x, y){
         this.ctx = ctxBg;
@@ -75,9 +75,7 @@ export class Car {
         
         // Essa função ajuda com o problema do grid e coordenadas, o grid é 5x5 então necessitamos fazer ele ficar entre 5
         // o Grid não funciona nas coordenadas 0-0, é o espaço seguro (offset).
-        function roundTen(num) {
-            return Math.ceil(num / 5) * 5;
-        }
+        
         let coords = state.getCurrentCoords();
         // ponto da cidade mais próxima
         let packStartPoint = {x: roundTen(x), y: roundTen(y)}

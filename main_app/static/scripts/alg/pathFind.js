@@ -81,7 +81,7 @@ export class PathAlgorithm {
             //     currentNode.drawNode();
             // }
             // if (currentNode.walkable == false) {
-                
+            //     console.log('draw')
             //     currentNode.drawNode();
             // }
             

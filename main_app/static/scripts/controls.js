@@ -8,6 +8,9 @@ export function getCursorPosition(canvas, event) {
     return { x: x, y: y}
 }
 
+export function roundTen(num) {
+    return Math.ceil(num / 5) * 5;
+}
 /**
  * Estado atual do carro, este objeto deve ser incorporado ao objeto carro eventualmente
  * Necessita do objeto correspondente a label para ir modificando
@@ -50,7 +53,7 @@ export class CarState {
     setStopped(state) {
         this.targetReached = false;
         this.stopped = state; // Não confundir com iddle
-        if (state) {
+        if (state) { // Casos do local próximo
             if( ( Math.round(100 * (this.progress.iterator / this.progress.totalNodes)) ) >= 70 ) {
                 this.controllables.setAction(`Parado próximo ao alvo: ${this.currentTarget.name}.`);
             } else if ( ( Math.round(100 * (this.progress.iterator / this.progress.totalNodes)) ) <= 30) {
